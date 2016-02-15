@@ -7,6 +7,8 @@
 
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
+#include <ctime>
 
 /**
  * Initiate random seed
