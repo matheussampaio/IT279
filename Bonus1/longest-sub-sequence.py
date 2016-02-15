@@ -1,3 +1,6 @@
+import random
+import sys
+
 def longestSubSequence(numbers):
     dp = [ [ numbers[0] ] ]
     solution = dp[0]
@@ -20,9 +23,16 @@ def longestSubSequence(numbers):
     return solution
 
 def main():
-    numbers = [3, 15, 13, 17, 3, 13, 2, 14, 15, 4, 10, 15, 10, 14, 15, 14, 5, 10, 17, 9]
 
-    print longestSubSequence(numbers)
+    size = 10
+
+    if (sys.argv[1] and int(sys.argv[1]) > 0):
+        size = int(sys.argv[1])
+
+    numbers = [random.randint(1, size) for i in xrange(size)]
+
+    print "**** size: %d ****" % size
+    print len(longestSubSequence(numbers))
 
 if __name__ == "__main__":
     main()
