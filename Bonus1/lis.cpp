@@ -123,7 +123,7 @@ void longest_sub_sequence(int size, int numbers[]) {
         index = next_index[index];
     }
 
-    std::cout << "Longest inscreasing subsequence, length:" << best_solution_length << std::endl;
+    std::cout << "Longest increasing subsequence, length:" << best_solution_length << std::endl;
     print_array(best_solution_length, best_solution_array);
 }
 
