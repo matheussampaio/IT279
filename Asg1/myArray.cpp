@@ -1,9 +1,9 @@
-/*
- *  Programmer: Matheus Sampaio - msanto2@gmail.com
- *  ULID: msanto2
- *  Class: IT279
- *  License: MIT
- */
+//============================================================================
+// Author      : Matheus Sampaio <msanto2@ilstu.edu>
+// ULID        : msanto2
+// Class       : IT279 - Algorithms And Data Structures
+// Copyright   : MIT
+//============================================================================
 
 #include <stdlib.h>
 
@@ -79,7 +79,7 @@ int & myArray::operator [] (int i) {
 /**
  * Return the Biggest Number's index in the array.
  *
- * @reeturn Biggest Number's index.
+ * @return Biggest Number's index.
  */
 int myArray::max() {
     int result = 0;

@@ -1,11 +1,16 @@
+//============================================================================
+// Author      : Matheus Sampaio <msanto2@ilstu.edu>
+// ULID        : msanto2
+// Class       : IT279 - Algorithms And Data Structures
+// Copyright   : MIT
+//============================================================================
+
 #include <iostream>
 #include <sstream>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
 
-using namespace std;
-
+/**
+ * Initiate random seed
+ */
 void set_random_seed() {
     // get current time
     time_t timer;
@@ -15,40 +20,61 @@ void set_random_seed() {
     srand(timer);
 }
 
-void print_sequence(vector<int> seq) {
+/**
+ * Print array of integer. If size if greater then 25,
+ * then print just the first 25 elements.
+ *
+ * @param size The size of the array.
+ * @param array[] The array.
+ */
+void print_array(int size, int array[]) {
     int max_length = 25;
 
-    if (seq.size() < max_length) {
-        max_length = seq.size();
+    if (size < max_length) {
+        max_length = size;
     }
 
     for (int i = 0; i < max_length - 1; i++) {
-        cout << seq[i] << ", ";
+        std::cout << array[i] << ", ";
     }
 
-    cout << seq[max_length - 1];
+    std::cout << array[max_length - 1];
 
-    if (seq.size() > max_length) {
-        cout << ", .....";
+    if (size > max_length) {
+        std::cout << ", .....";
     }
 
-    cout << endl;
+    std::cout << std::endl;
 }
 
-vector<int> generate_numbers(int size) {
-    vector<int> numbers;
+/**
+ * Generate an array of random integers between 0 and size (size included).
+ *
+ * @param size The size of the array to be generated.
+ * @return Array with random integers.
+ */
+int* generate_numbers(int size) {
+    int* array = new int[size];
 
     for (int i = 0; i < size; i++) {
         int n = rand() % (size + 1);
-        numbers.push_back(n);
+        array[i] = n;
     }
 
-    return numbers;
+    return array;
 }
 
-bool contains(vector<int> v, int x) {
-    for (int i = 0; i < v.size(); i++) {
-        if (v[i] == x) {
+/**
+ * Search for element in array.
+ *
+ * @param size The size of the array.
+ * @param array[] The array.
+ * @param element The element to be searched for.
+ * @return True if array contains elemente. False otherwise.
+ */
+bool array_contains_element(int size, int array[], int element) {
+    for (int i = 0; i < size; i++) {
+        if (array[i] == element) {
             return true;
         }
     }
@@ -56,81 +82,67 @@ bool contains(vector<int> v, int x) {
     return false;
 }
 
-vector<int> longest_sub_sequence(vector<int> numbers) {
-    vector< vector<int> > dp;
+/**
+ * Find and print the longest increasing subsequence inside of numbers.
+ *
+ * @param size The size of numbers.
+ * @param numbers[] The numbers array.
+ */
+void longest_sub_sequence(int size, int numbers[]) {
+    int next_index[size];
+    int solutions_length[size];
 
-    vector<int> temp;
-    // dp = [ [ numbers[0] ] ]
+    int best_solution_start_index = 0; // keep track of best solution
 
-    temp.push_back(numbers[0]);
-    dp.push_back(temp);
+    for (int i = 0; i < size; i++) {
+        next_index[i] = -1;
+        solutions_length[i] = 1;
 
-    vector<int> solution = dp[0];
+        for (int k = 0; k < i; k++) {
 
+            if (numbers[i] > numbers[k] && solutions_length[k] >= solutions_length[i]) {
+                solutions_length[i] = solutions_length[k] + 1;
 
-    for (int i = 1; i < numbers.size(); i++) {
-        vector<int> solution_with_element;
+                if (solutions_length[i] > solutions_length[best_solution_start_index]) {
+                    best_solution_start_index = i;
+                }
 
-        for (int j = 0; j < dp.size(); j++) {
-            int last_element_index = dp[j][ dp[j].size() - 1];
-
-            if (numbers[i] > last_element_index && dp[j].size() > solution_with_element.size()) {
-                solution_with_element = dp[j];
+                next_index[i] = k;
             }
-        }
-
-        if (!contains(solution_with_element, numbers[i])) {
-            solution_with_element.push_back(numbers[i]);
-        }
-
-        dp.push_back(solution_with_element);
-
-        if (solution_with_element.size() > solution.size()) {
-            solution = solution_with_element;
         }
     }
 
-    return solution;
-    // for e in numbers[1:]:
-    //     solutionWithE = []
-    //
-    //     for r in dp:
-    //         if e > r[-1] and len(r) > len(solutionWithE):
-    //             solutionWithE = r[:]
-    //
-    //     if e not in solutionWithE:
-    //         solutionWithE.append(e)
-    //
-    //     dp.append(solutionWithE)
-    //
-    //     if (len(solutionWithE) > len(solution)):
-    //         solution = solutionWithE
-    //
-    // return solution
+    int best_solution_length = solutions_length[best_solution_start_index];
+    int best_solution_array[best_solution_length];
+
+    int index = best_solution_start_index;
+    for (int i = best_solution_length - 1; i >= 0; i--) {
+        best_solution_array[i] = numbers[index];
+        index = next_index[index];
+    }
+
+    std::cout << "Longest inscreasing subsequence, length:" << best_solution_length << std::endl;
+    print_array(best_solution_length, best_solution_array);
 }
 
-int main(int argc, char **argv)
-{
-    if (argc >= 2)
-    {
+/**
+ * The main method. You should pass the size of the array as command-line
+ * argument.
+ */
+int main(int argc, char **argv) {
+    if (argc >= 2) {
         std::istringstream iss( argv[1] );
         int size;
 
-        if (iss >> size)
-        {
+        if (iss >> size && size > 0) {
             // init randon seed
-            // set_random_seed();
+            set_random_seed();
 
-            // Generate numbers and print them
-            vector<int> numbers = generate_numbers(size);
-            cout << "Sequence length:" << numbers.size() << endl;
-            print_sequence(numbers);
+            int* numbers = generate_numbers(size);
+            std::cout << "Sequence length:" << size << std::endl;
+            print_array(size, numbers);
 
-            // find the longest sub sequence and print the result
-            vector<int> solution = longest_sub_sequence(numbers);
-
-            cout << "Longest increasing subsequence, length:" << solution.size() << endl;
-            print_sequence(solution);
+            longest_sub_sequence(size, numbers);
         }
     }
 
