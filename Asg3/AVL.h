@@ -23,18 +23,18 @@ enum Rotation {NoRotation, LL, LR, RR, RL};
 /*******************************************************/
 template<typename T>
 class AVL: public BST<T>  { // inherit BST
-	public:
-		AVL();	           // default constructor
-		void insert(int key, T data);
-		//T *remove(int key);  //remove data with key and return the removed data's reference
+    public:
+        AVL();               // default constructor
+        void insert(int key, T data);
+        //T *remove(int key);  //remove data with key and return the removed data's reference
 
-		AVL<T> & operator = (const AVL<T> & a); // Big Three
-		AVL(const AVL<T> & RT);
-		~AVL();
+        AVL<T> & operator = (const AVL<T> & a); // Big Three
+        AVL(const AVL<T> & RT);
+        ~AVL();
 
-	private:// Students can add or remove any private methods as wish
-		//void remove(TreeNode<T> *node);
-		void rotate(TreeNode<T> *node);
+    private:// Students can add or remove any private methods as wish
+        //void remove(TreeNode<T> *node);
+        void rotate(TreeNode<T> *node);
 };
 
 #endif /* AVL_H_ */
